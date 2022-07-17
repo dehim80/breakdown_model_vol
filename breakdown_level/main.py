@@ -32,17 +32,25 @@ def create_channel():
 
 
 def check_activ_ord(high_el, low_el):
-    # Следим за ценой и открываем ордер
+    # Следим за ценой и ждем пересечения с границей канала
     k = 1
     while True:
         url = 'https://www.bitmex.com/api/v1/trade?symbol=XBTUSD&count=1&reverse=true'
 
         resp = requests.get(url).text
         data = json.loads(resp)
-        data1 = (data[0]['price'])
-        print(k,data1)
-        time.sleep(2)
+        price = (data[0]['price'])
+        print(k,price)
+        time.sleep(3)
+        k+=1
+        if price > high_el or price < low_el:
+            return check_big_volume()
 
+
+def check_big_volume():
+    # Следим за обьемом. Должен пройти одним принтом болше 300К
+    pass
 
 if __name__ == '__main__':
-    main()
+    check_activ_ord(21800, 20600)
+    #main()

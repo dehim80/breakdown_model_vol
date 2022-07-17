@@ -44,17 +44,6 @@ def time_now():
     return (f'{loc_year}-{loc_month}-{loc_date}%20{loc_hour}%3A{loc_min}')
 
 
-def time_four_hours_ago():
-    print('time_four_hours_ago')
-    loc_hour = (time.gmtime().tm_hour)-4
-    loc_min = time.gmtime().tm_min
-    loc_date = time.gmtime().tm_mday
-    loc_month = time.gmtime().tm_mon
-    loc_year = time.gmtime().tm_year
-    print("4 hours ago ", f'{loc_year}-{loc_month}-{loc_date}%20{loc_hour}%3A{loc_min}')
-    return (f'{loc_year}-{loc_month}-{loc_date}%20{loc_hour}%3A{loc_min}')
-
-
 def date_now():
     loc_year = time.gmtime().tm_year
     loc_month = time.gmtime().tm_mon
