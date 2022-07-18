@@ -20,7 +20,9 @@ def time_mod():
 
 def time_mod_midnight():
     # Следит за временем в 04-30 делает return
-    loc_hour = time.localtime().tm_hour
+    print(('Зашли в time_mod_midnight'))
+    loc_hour = time.gmtime().tm_hour
+    print('loc_hour', loc_hour)
     if loc_hour >= 4 and loc_hour <= 23:
         return
     while True:
@@ -35,13 +37,18 @@ def time_mod_midnight():
 
 
 def time_now():
-    print('Зашли в функцию time_nowW')
+    #print('Зашли в функцию time_now. Запрашиваем терминальное время')
     loc_hour = time.gmtime().tm_hour
     loc_min = time.gmtime().tm_min
     loc_date = time.gmtime().tm_mday
     loc_month = time.gmtime().tm_mon
     loc_year = time.gmtime().tm_year
     return (f'{loc_year}-{loc_month}-{loc_date}%20{loc_hour}%3A{loc_min}')
+
+
+def min_now():
+    loc_min = time.gmtime().tm_min
+    return loc_min
 
 
 def date_now():
@@ -52,5 +59,4 @@ def date_now():
 
 
 # if __name__ == '__main__':
-#     print(time_four_hours_ago())
-#     print(time_now())
+#     print(min_now())
