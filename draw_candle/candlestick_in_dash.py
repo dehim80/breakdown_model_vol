@@ -6,7 +6,7 @@ import pandas as pd
 app = Dash(__name__)
 
 app.layout = html.Div([
-    html.H6('Apple stock candlestick chart'),
+
     dcc.Checklist(
         id='toggle-rangeslider',
         options=[{'label': 'Include Rangeslider',
@@ -22,16 +22,18 @@ app.layout = html.Div([
     Input("toggle-rangeslider", "value"))
 def display_candlestick(value):
 
-    df = pd.read_csv('./hist2022-07-31-(18-7-29)sec.csv')
+    df = pd.read_csv('./hist2022-07-28-(20-20-58)sec.csv')
 
     fig = go.Figure(go.Candlestick(
         x=df['time'],
         open=df['open'],
-        high=df['high'],
-        low=df['low'],
-        close=df['close']
+        close=df['close'],
+        low = df['low'],
+        high=df['high']
+
+
     ))
-    fig.update_layout(margin=dict(t=0,b=0))
+    fig.update_layout(margin=dict(t=0,b=0,l=200,r=200))
     fig.update_layout(
         xaxis_rangeslider_visible='slider' in value
     )
