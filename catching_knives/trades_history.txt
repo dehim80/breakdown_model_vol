@@ -1,0 +1,20 @@
+
+new_market_order - orderID: f8065fff-0e03-4964-b5a3-4bb1d2456833, price:0.3697, order:-1,time:2022-08-05T16:47:47.389Z
+new_limit_order - orderID: ba51f4fe-4cfa-46d9-b9bf-3e3add0fc69c, price:0.3694, side:Buy,time:2022-08-05T16:47:58.092Z
+new_market_order - orderID: 6b1d6741-8308-45c5-9a43-6b8652a1a28b, price:0.369, order:-1,time:2022-08-05T18:47:51.521Z
+new_limit_order - orderID: d40a51d9-8cf8-4917-b033-5b18dffd80ef, price:0.3687, side:Buy,time:2022-08-05T18:48:05.635Z
+close_all_position - time:8-5  18:55:45 ([], <bravado.requests_client.RequestsResponseAdapter object at 0x0000014442DD75B0>)
+close_market_order - orderID: 34b72fa6-0ae2-421e-a0a1-97659b098da7, price:0.3681, side:Buy,time:2022-08-05T18:55:52.094Z
+new_market_order - orderID: b2676446-5124-4866-95d1-8f986d0fc36f, price:0.3747, order:-1,time:2022-08-06T07:48:56.036Z
+new_limit_order - orderID: 321495e2-dc01-4c59-9ba5-6e985df9c2ef, price:0.3744, side:Buy,time:2022-08-06T07:49:05.297Z
+close_all_position - time:8-6  7:50:5 ([{'orderID': '321495e2-dc01-4c59-9ba5-6e985df9c2ef', 'clOrdID': '', 'clOrdLinkID': '', 'account': 1601388.0, 'symbol': 'XRPUSD', 'side': 'Buy', 'simpleOrderQty': None, 'orderQty': 1.0, 'price': 0.3744, 'displayQty': None, 'stopPx': None, 'pegOffsetValue': None, 'pegPriceType': '', 'currency': 'USD', 'settlCurrency': 'XBt', 'ordType': 'Limit', 'timeInForce': 'GoodTillCancel', 'execInst': '', 'contingencyType': '', 'exDestination': 'XBME', 'ordStatus': 'Canceled', 'triggered': '', 'workingIndicator': 0.0, 'ordRejReason': '', 'simpleLeavesQty': None, 'leavesQty': 0.0, 'simpleCumQty': None, 'cumQty': 0.0, 'avgPx': None, 'multiLegReportingType': 'SingleSecurity', 'text': 'Canceled: Canceled via API.\nSubmitted via API.', 'transactTime': '2022-08-06T07:49:05.297Z', 'timestamp': '2022-08-06T07:50:06.714Z'}], <bravado.requests_client.RequestsResponseAdapter object at 0x000001DD8C9A2860>)
+close_position - orderID: 8e9a54c9-e223-4db1-828a-5c66169ad2bb, price:0.3752, side:Buy,time:2022-08-06T07:50:15.556Z
+new_market_order - orderID: b8514f58-cb4f-45b7-8f7a-d46febaac0e9, price:0.375, order:-1,time:2022-08-06T07:59:20.953Z
+new_limit_order - orderID: 36ca2d71-9eb3-450f-9771-1059cc4c0236, price:0.3747, side:Buy,time:2022-08-06T07:59:31.449Z
+close_all_position - time:8-6  8:0:54 ([{'orderID': '36ca2d71-9eb3-450f-9771-1059cc4c0236', 'clOrdID': '', 'clOrdLinkID': '', 'account': 1601388.0, 'symbol': 'XRPUSD', 'side': 'Buy', 'simpleOrderQty': None, 'orderQty': 1.0, 'price': 0.3747, 'displayQty': None, 'stopPx': None, 'pegOffsetValue': None, 'pegPriceType': '', 'currency': 'USD', 'settlCurrency': 'XBt', 'ordType': 'Limit', 'timeInForce': 'GoodTillCancel', 'execInst': '', 'contingencyType': '', 'exDestination': 'XBME', 'ordStatus': 'Canceled', 'triggered': '', 'workingIndicator': 0.0, 'ordRejReason': '', 'simpleLeavesQty': None, 'leavesQty': 0.0, 'simpleCumQty': None, 'cumQty': 0.0, 'avgPx': None, 'multiLegReportingType': 'SingleSecurity', 'text': 'Canceled: Canceled via API.\nSubmitted via API.', 'transactTime': '2022-08-06T07:59:31.449Z', 'timestamp': '2022-08-06T08:00:55.648Z'}], <bravado.requests_client.RequestsResponseAdapter object at 0x0000024368DC3E20>)
+close_position - orderID: a6da5e78-a3c6-46a2-93dd-c4119ae5ec22, price:0.3756, side:Buy,time:2022-08-06T08:01:04.023Z
+new_market_order - time:2022-08-06T08:14:49.250Z, price:0.376, side:Sell,orderID: 94a81ecb-714c-48a6-8da5-4d7304377428
+new_limit_order - time:2022-08-06T08:14:57.815Z, price:0.3757, side:Buy,orderID: e4a9d5a7-2d19-4eec-a1d1-5a0d34ddd7c1
+close_position -  time:2022-08-06T08:54:55.457Z, price:None, side:,orderID: 38323445-0dda-4a44-a2af-843a19fcbc54
+close_position -  time:2022-08-06T09:23:43.785Z, price:0.3748, side:Sell,orderID: f266fc56-a507-4426-a5fc-12fde9cfb149
+close_all_position- time:2022-08-06T09:24:55.384Z, price:0.377, side:Sell,orderID: 8145f02c-e166-4b55-b3aa-6db07ccbd277
