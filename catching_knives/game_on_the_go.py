@@ -56,8 +56,8 @@ def check_big_candle():
 
 def new_market_order(orderQty):
     print(f'Мы вошли в функцию new_market_order сторона: {orderQty}')
-    client = bitmex.bitmex(test=False, api_key='A8n4hPQLXfbnKy4CONZwQAPl',
-                           api_secret='8aNSZRFE3ZzwbzMSyiqLXIzZTgeJUF6cUmXjrgTYW_1xjrfd')
+    client = bitmex.bitmex(test=False, api_key='',
+                           api_secret='')
     order_new_market = client.Order.Order_new(symbol='XRPUSD', orderQty=orderQty).result()
     ord_new_m_price = order_new_market[0]['price']
     orderID = order_new_market[0]['orderID']
@@ -85,8 +85,8 @@ def new_market_order(orderQty):
 def new_limit_order(orderQty, price):
     # открывает позицию (orderQty=+1)-на покупку. (orderQty=-1)-на продажу.записывает orderId в файл order_id
     print(f'Мы вошли в функцию new_limit_order сторона: {orderQty} цена: {price} ')
-    client = bitmex.bitmex(test=False, api_key='A8n4hPQLXfbnKy4CONZwQAPl',
-                           api_secret='8aNSZRFE3ZzwbzMSyiqLXIzZTgeJUF6cUmXjrgTYW_1xjrfd')
+    client = bitmex.bitmex(test=False, api_key='',
+                           api_secret='')
     order_new = client.Order.Order_new(symbol='XRPUSD', orderQty=orderQty, ordType='Limit', price=price).result()
     print('order_new - ',order_new)
     orderID = order_new[0]['orderID']
@@ -129,8 +129,8 @@ def check_open_ord(orderQty, stopPX, ord_lim_price, orderID):
 
 def close_position():
     print(f'Мы вошли в функцию close_position')
-    client = bitmex.bitmex(test=False, api_key='A8n4hPQLXfbnKy4CONZwQAPl',
-                               api_secret='8aNSZRFE3ZzwbzMSyiqLXIzZTgeJUF6cUmXjrgTYW_1xjrfd')
+    client = bitmex.bitmex(test=False, api_key='',
+                               api_secret='')
     close_pos = client.Order.Order_closePosition(symbol='XRPUSD').result()
     print(f'type close_position = {type(close_pos)}')
     orderID = close_pos[0]['orderID']
@@ -145,8 +145,8 @@ def close_position():
 def close_all_position():
     # Закрывает все позиции.
     print('Мы в функции close_all_position')
-    client = bitmex.bitmex(test=False, api_key='A8n4hPQLXfbnKy4CONZwQAPl',
-                           api_secret='8aNSZRFE3ZzwbzMSyiqLXIzZTgeJUF6cUmXjrgTYW_1xjrfd')
+    client = bitmex.bitmex(test=False, api_key='',
+                           api_secret='')
 
     close_all = client.Order.Order_cancelAll().result()
     close_all= close_all[0]
