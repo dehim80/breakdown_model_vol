@@ -8,23 +8,25 @@ import pandas as pd
 
 
 def check_trades():
-    # Проверяем кол-во трейдов, если он больше заданного, то переходим дальше
+    # Проверяем открытие-закрытие>200т, если он больше заданного, то переходим дальше
     print('вход в чек трейдс')
     i = 1
     while True:
+        time_mod()
         url = 'https://www.bitmex.com/api/v1/trade/bucketed?binSize=1m&partial=false&symbol=XBTUSD&count=1&reverse=true'
         resp = requests.get(url).text
         data = json.loads(resp)
         data1 = data[0]
-        vol = data1['trades']
-        print(f'проход № {i}  Количество сделок: {vol} время:', time_now())
-        i += 1
-        if vol < 1000:  # 1000 нужный параметр
-            print('Маленькое кол-во сделок')
-            time_mod()
-        else:
-            print('У нас нужный объём, выполняем проверку на отклонение за последние 10 свечей')
+        open_price = data1['open']
+        close_price = data1['close']
+        dev_price  = abs(close_price-open_price)
+        time = data1['timestamp']
+
+        if dev_price>=10: # 200 нужный параметр *******************************************************
+            print(f'time- {time} свеча больше 200-т\nПереходим к проверке за 10 свечей')
             return deviation_price()
+        else:
+            print (f'time- {time} размер свечи {dev_price} меньше 200-т')
 
 
 def deviation_price():
@@ -36,14 +38,19 @@ def deviation_price():
     resp_close_ten = resp2_json[9]['close']
     print('Проверяем изменение цены за десять свечей')
     print(f'now: {resp_close_now} ten candels later:  {resp_close_ten}')
-    if abs(resp_close_ten - resp_close_now) >= 300:  # 500 нужный параметр
-        print('Переходим к проверке разворотной свечи')
+    dev_price = abs(resp_close_ten - resp_close_now)
+    if dev_price >= 300:  # 300 нужный параметр************************************************
+        print('Разница в цене больше 300.\nПереходим к проверке разворотной свечи.reversal_candle')
+        with open('./openorder.txt', 'a') as file:
+                file.write(f'\nУ нас нужное отклонение {abs(resp_close_ten - resp_close_now)}\nПереходим к проверке разворотной свечи.reversal_candle')
         i = 1
         return reversal_candle(i)
     else:
-        print('ждем минуту до формирования следующей свечи')
+        print(f' Отклонение маленькое: {dev_price}, ждем минуту до формирования следующей свечи')
+        with open('./openorder.txt', 'a') as file:
+                file.write(f'Отклонение маленькое {abs(resp_close_ten - resp_close_now)}, переходим в начало программы')
         time_mod()
-        return print('переходим опять в чек вольюм'), check_trades()
+        return print('Разница в цене меньше 300.\nпереходим в начало программы'), check_trades()
 
 
 def reversal_candle(i):
