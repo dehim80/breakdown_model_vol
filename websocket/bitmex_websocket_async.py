@@ -12,13 +12,13 @@ async def main():
             try:
                 data = json.loads(await client.recv())
                 data = data['data']
+                lenght = len(data)
                 print(type(data))
-                print(len(data))
-                print (data)
+                print (data[0]['price'])
+                # Рабочий вебсокет выщемляет цену из потока ордеров.Со временем заменить play on game вебсокетом
 
             except KeyError:
                 print('кейеррор')
-
 
 
 if __name__ == '__main__':
