@@ -1,43 +1,22 @@
-import requests
-import json
-import time
-import bitmex
-import websockets
-import asyncio
-# функция подключатся к сокету и вынимает цену
+import requests, time
+from bitmex_websocket import BitMEXWebsocket
+import socket
 
-async def main():
-    # url = "wss://stream.binance.com:9443/stream?streams=btcusdt@miniTicker"
-    url = 'wss://ws.bitmex.com/realtime?subscribe=trade:XBTUSD'
-    async with websockets.connect(url) as client:
-        min2 = 70
-        while True:
-            try:
-                data = json.loads(await client.recv())
-                data = data['data']
-                min1= time_now()[4:7]
-                if min1 != min2:
-                    price_first = round(data[0]['price'])
-                    print('price_first:', price_first)
 
-                min2 = min1
-                for i in data:
-                    price_ie = round(i['price'])
-                    diff = abs(price_first - price_ie)
-                    time_ie = i['timestamp']
-                    print(f'time_ie: {time_ie}  price_ie: {price_ie}  diff: {diff}')
-                    if abs(price_first - price_ie) > 10:
-                        if price_first - price_ie > 0:
-                            orderQty = -100
-                        else:
-                            orderQty = 100
-                        print('У нас нужное изменение цены, открываем маркет')
-                        with open("infa_onthe_orders.txt", "a") as file:
-                            file.write(f"\ntime={time_ie}  price={price_ie}  order-{orderQty}")
-                        return new_market_order(orderQty)
+def main():
+    endpoint='wss://ws.bitmex.com/realtime'
 
-            except KeyError:
-                print('кейеррор')
+
+    sock = socket.socket()
+    sock.connect((endpoint,443))
+    sock.send({"op": "subscribe", "args": ["orderBookL2_25:XBTUSD"]})
+
+    data = sock.recv(1024)
+    print(data)
+    sock.close()
+
+
+
 
 
 def time_now():
@@ -51,6 +30,4 @@ def new_market_order(orderQty):
 
 
 if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
-    print('stop program')
+    main()

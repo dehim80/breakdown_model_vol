@@ -76,7 +76,7 @@ def higher(count,high,time_h,gen_list, depth, resp_json):
 def create_model(gen_list):
     for element in gen_list:
         print(element)
-    print('end program')
+    print('end programm')
     quit()
 
 
