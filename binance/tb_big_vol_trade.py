@@ -1,3 +1,4 @@
+import bravado
 import websockets
 import asyncio
 import json
@@ -40,16 +41,15 @@ async def main(level): # Функция подключается к сокету
                         orderQty = location_level*100
                         client.close()
                         print('Закрыли сокет')
-                        new_market_order(orderQty)
-                        break
+                        return orderQty
                         # закрываем сокет и переходим к открытию ордера и выставления стоп лосса и тейк профита
                     if location_level == -1 and sum_of_vol > 1000 and data_price < level: # 1000 Если level ниже текущей цены
                         print('open buy market order')
                         orderQty = location_level*100
                         client.close()
                         print('Закрыли сокет')
-                        new_market_order(orderQty) # asyncio.create_task
-                        break
+                        return orderQty # asyncio.create_task
+
                     if time_sec() == 0 and time_sec() < old_sec: # если началась новая минута, то сбрасываем счетчик
                         print('time_sec() == 0   Новая минута сбрасываем счетчики')
                         print('max_vol=', sum_of_vol)
@@ -58,14 +58,15 @@ async def main(level): # Функция подключается к сокету
                     counter += 1
                     old_sec = time_sec()
         except websockets.exceptions.ConnectionClosedError:
-            print("Ошибка: соединение было закрыто без отправки фрейма закрытия. Переподключение...")
+            mess = "Ошибка: соединение было закрыто без отправки фрейма закрытия. Переподключение..."
+            send_message(mess)
             await client.close()
             print('11111')
             # ждем несколько секунд перед повторной попыткой подключения
             await asyncio.sleep(20)
             print('2222222')
             retries += 1
-        break
+        # break закоментил после того,как программа закончила работу сошибкой сокета и не передпоключилась из-з break
 
 
 def new_market_order(orderQty):
@@ -73,7 +74,7 @@ def new_market_order(orderQty):
     client = bitmex.bitmex(test=False, api_key='wAPUL0s094kCwzErt17KiFBD',
                            api_secret='qe9jpgUf_EVTNIvtc6PNMHzQl8sssJlW5C3rRefWFWcMhG6Y')
     order_new_market = client.Order.Order_new(symbol='XBTUSD', orderQty=orderQty).result()
-    ord_new_m_price = order_new_market[0]['price']
+    ord_new_m_price = order_new_market[0]['price'] # цена открытия
     orderID = order_new_market[0]['orderID']
     print(f'orderID: {orderID}')
     mess = f'open market order pos:{orderQty} price:{ord_new_m_price}'
@@ -81,8 +82,7 @@ def new_market_order(orderQty):
     send_message(mess)
     stop_order(orderQty, ord_new_m_price) # Выставляем стоп-ордер
     limit_order(orderQty, ord_new_m_price) # Выставляем лимитник на прибыль
-    pos() # Чекаем позицию, если закрылась то
-    close_all_position() # отменяем все ордера
+    return
 
 
 def stop_order(orderQty, ord_new_m_price):
@@ -120,26 +120,29 @@ def limit_order(orderQty, ord_new_m_price):
 
 
 def pos():
-    client = bitmex.bitmex(test=False, api_key='wAPUL0s094kCwzErt17KiFBD',
-                           api_secret='qe9jpgUf_EVTNIvtc6PNMHzQl8sssJlW5C3rRefWFWcMhG6Y')
+    client = bitmex.bitmex(test=False, api_key='wAPUL0s094kCwzErt17KiFBD', api_secret='qe9jpgUf_EVTNIvtc6PNMHzQl8sssJlW5C3rRefWFWcMhG6Y')
     while True:
-        pos = client.Position.Position_get().result()
-        position = pos[0]
-        for el in position:
-            if el['symbol'] =='XBTUSD':
-                if el['currentQty'] == 0:
-                    print('Нет открытой позиции по XRPUSD')
-                    realisedPnl = el['realisedPnl']
-                    mess = f'реализованный Pnl:{realisedPnl}'
-                    send_message(mess)
-                    return
-                if el['currentQty'] != 0:
-                    liverage = el['leverage']
-                    realisedPnl = el['realisedPnl']
-                    unrealisedPnl = el['unrealisedPnl']
-                    EntryPrice = el['avgEntryPrice']
-                    print (f'открыта позиция по XRPUSD. цена входа {EntryPrice} leverage {liverage} ')
-                    print(f'реализованный Pnl {realisedPnl} нереализованный Pnl {unrealisedPnl}')
+        try:
+            pos = client.Position.Position_get().result()
+            position = pos[0]
+            for el in position:
+                if el['symbol'] =='XBTUSD':
+                    if el['currentQty'] == 0:
+                        print('Нет открытой позиции по XRPUSD')
+                        realisedPnl = el['realisedPnl']
+                        mess = f'реализованный Pnl:{realisedPnl}'
+                        send_message(mess)
+                        return
+                    if el['currentQty'] != 0:
+                        liverage = el['leverage']
+                        realisedPnl = el['realisedPnl']
+                        unrealisedPnl = el['unrealisedPnl']
+                        EntryPrice = el['avgEntryPrice']
+                        print(f'открыта позиция по XRPUSD. цена входа {EntryPrice} leverage {liverage}')
+                        print(f'реализованный Pnl {realisedPnl} нереализованный Pnl {unrealisedPnl}')
+        except bravado.exception.HTTPBadRequest as e:
+            print(f'Произошла ошибка HTTPBadRequest: {e}')
+            continue  # Пропустить итерацию и продолжить выполнение цикла
         time.sleep(10)
 
 
@@ -148,7 +151,6 @@ def close_all_position():
     print('Мы в функции close_all_position')
     client = bitmex.bitmex(test=False, api_key='wAPUL0s094kCwzErt17KiFBD',
                            api_secret='qe9jpgUf_EVTNIvtc6PNMHzQl8sssJlW5C3rRefWFWcMhG6Y')
-
     client.Order.Order_cancelAll().result()
     print('Все ордера закрыты')
 
@@ -186,8 +188,19 @@ def send_message(mess):
     print('resp', resp)
 
 
+def control(level):
+    loop = asyncio.get_event_loop()
+    future = asyncio.ensure_future(main(level))
+    loop.run_until_complete(future)
+    orderQty = future.result()
+    asyncio.get_event_loop().stop()
+    new_market_order(orderQty)
+    pos()  # Чекаем позицию, если закрылась то
+    close_all_position()  # отменяем все ордера
+
+
 if __name__ == '__main__':
     print('if name == main')
-    level = 27400
-    asyncio.get_event_loop().run_until_complete(main(level))
-    asyncio.get_event_loop().stop()
+    level = 27200
+    control(level)
+
