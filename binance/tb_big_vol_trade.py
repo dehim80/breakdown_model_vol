@@ -194,8 +194,8 @@ def control(level):
     loop.run_until_complete(future)
     orderQty = future.result()
     asyncio.get_event_loop().stop()
-    new_market_order(orderQty)
-    pos()  # Чекаем позицию, если закрылась то
+    new_market_order(orderQty) # Открываем новый ордер
+    pos()  # Следим за позицией, если закрылась то
     close_all_position()  # отменяем все ордера
 
 
