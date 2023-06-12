@@ -2,7 +2,7 @@ import requests
 import asyncio
 from aiogram import Bot, Dispatcher, types
 
-TOKEN='5896626762:AAHGpDL53QbVY9uwareE3rpiYUKy4ouhAQY'
+TOKEN=''
 
 async def level(ticker):  # https://binance-docs.github.io/apidocs/futures/en/#kline-candlestick-data
     url = f'https://fapi.binance.com/fapi/v1/klines?symbol={ticker}&interval=1m&limit=140' # &startTime={unix_time()}
